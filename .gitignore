@@ -1,0 +1,69 @@
+# -------------------------
+# Node.js / Backend
+# -------------------------
+
+# Node modules
+node_modules/
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+out/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/editor directories
+.vscode/
+.idea/
+
+# -------------------------
+# Frontend / React
+# -------------------------
+
+# React build
+build/
+# Optional cache
+.cache/
+.next/
+out/
+.eslintcache
+
+# Dependency directories
+node_modules/
+
+# Environment files for frontend
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# -------------------------
+# Misc / Other
+# -------------------------
+*.bak
+*.tmp
+*.swp
+*.swo
