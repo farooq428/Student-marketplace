@@ -27,7 +27,7 @@ const AllOrders = () => {
           <li key={o._id} className="border p-2 mb-2 flex justify-between items-center">
             <div>
               <p>Buyer: {o.buyer.name}</p>
-              <p>Total: ₹ {o.totalAmount}</p>
+              <p>Total: Rs {o.totalAmount}</p>
               <p>Status: {o.status}</p>
             </div>
             <div className="flex gap-2">

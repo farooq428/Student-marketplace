@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
     <article className="bg-white rounded-lg shadow-sm hover:shadow-lg overflow-hidden">
       <div className="relative">
         <img src={img} alt={product.name} className="w-full h-48 object-cover" />
-        <div className="absolute top-3 left-3 bg-green-600 text-white text-xs px-2 py-1 rounded">₹ {product.price}</div>
+        <div className="absolute top-3 left-3 bg-green-600 text-white text-xs px-2 py-1 rounded">Rs {product.price}</div>
       </div>
 
       <div className="p-4">

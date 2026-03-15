@@ -1,10 +1,12 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
+import Notification from "../models/Notification.js";
+import PDFDocument from "pdfkit";
 
 // Create order (Buyer)
 export const createOrder = async (req, res) => {
   try {
-    const { products, totalAmount } = req.body;
+    const { products, totalAmount, paymentMethod = "COD", shippingInfo = {} } = req.body;
 
     if (!products || products.length === 0) {
       return res.status(400).json({ message: "No products in order" });
@@ -26,9 +28,50 @@ export const createOrder = async (req, res) => {
       buyer: req.user._id,
       products,
       totalAmount,
+      paymentMethod,
+      shippingInfo,
     });
 
-    res.status(201).json(order);
+    // Create notifications for sellers involved
+    const sellerIds = new Set();
+    for (let item of products) {
+      const prod = await Product.findById(item.product);
+      if (prod && prod.seller) sellerIds.add(prod.seller.toString());
+    }
+
+    for (let sid of sellerIds) {
+      await Notification.create({
+        user: sid,
+        order: order._id,
+        message: `New order ${order._id} placed. Check your orders.`,
+      });
+    }
+
+    // Generate a simple PDF receipt and return base64 to frontend for download
+    const doc = new PDFDocument();
+    const buffers = [];
+    doc.on("data", (chunk) => buffers.push(chunk));
+    doc.on("end", async () => {
+      const pdfData = Buffer.concat(buffers);
+      // return order and receipt base64
+      res.status(201).json({ order, receiptBase64: pdfData.toString("base64") });
+    });
+
+    // Write receipt content
+    doc.fontSize(20).text("Order Receipt", { align: "center" });
+    doc.moveDown();
+    doc.fontSize(12).text(`Order ID: ${order._id}`);
+    doc.text(`Buyer: ${req.user.name} (${req.user.email})`);
+    doc.text(`Payment: ${paymentMethod}`);
+    doc.moveDown();
+    doc.text("Products:");
+    for (let item of products) {
+      const prod = await Product.findById(item.product);
+      doc.text(`- ${prod?.name || item.product} x ${item.quantity} @ ${item.price || prod?.price || 0}`);
+    }
+    doc.moveDown();
+    doc.text(`Total: ${totalAmount}`);
+    doc.end();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

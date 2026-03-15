@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useCart } from "../hooks/useCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const formatCurrency = (v) => `₹ ${Number(v || 0).toFixed(2)}`;
+const formatCurrency = (v) => `Rs ${Number(v || 0).toFixed(2)}`;
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
@@ -81,15 +81,22 @@ const Cart = () => {
 
         <div className="flex items-center gap-3">
           <button onClick={clearAll} className="bg-red-500 text-white px-4 py-2 rounded">Clear Cart</button>
-          <button
-            onClick={() => { /* placeholder for checkout flow */ alert('Proceed to checkout (not implemented)'); }}
-            className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded"
-          >
-            Checkout
-          </button>
+          <CheckoutButton />
         </div>
       </div>
     </div>
+  );
+};
+
+const CheckoutButton = () => {
+  const navigate = useNavigate();
+  return (
+    <button
+      onClick={() => navigate('/checkout')}
+      className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded"
+    >
+      Checkout
+    </button>
   );
 };
 
