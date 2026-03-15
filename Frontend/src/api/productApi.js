@@ -7,6 +7,16 @@ export const createProduct = async (data) => {
   return res.data;
 };
 
+// Upload single product image (multipart/form-data)
+export const uploadProductImage = async (file) => {
+  const form = new FormData();
+  form.append("image", file);
+  const res = await API.post("/products/upload", form, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
 // Get all products
 export const getAllProducts = async () => {
   const res = await API.get("/products");
@@ -33,6 +43,16 @@ export const updateProduct = async (id, data) => {
 
 // Delete product
 export const deleteProduct = async (id) => {
-  const res = await API.delete(`/products/delete/${id}`);
-  return res.data;
+  try {
+    const res = await API.delete(`/products/delete/${id}`);
+    return res.data;
+  } catch (err) {
+    // Re-throw a more informative error so the UI can surface backend messages
+    if (err.response && err.response.data) {
+      const e = new Error(err.response.data.message || 'Server error');
+      e.response = err.response;
+      throw e;
+    }
+    throw err;
+  }
 };

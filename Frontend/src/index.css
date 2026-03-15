@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Project color scheme variables (easy to customize) */
+:root {
+	--primary-500: #10b981; /* emerald-500 */
+	--primary-600: #059669; /* emerald-600 */
+	--accent-500: #6366f1; /* indigo-500 */
+	--muted: #6b7280;
+}
+
+/* Small compact card for seller/product listings */
+.card-small {
+	/* more compact: smaller radius, less padding and subtler shadow */
+	@apply rounded-sm border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm p-2;
+}
+
+.btn-primary {
+	background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+	color: white;
+	border-radius: 0.375rem;
+	font-weight: 600;
+}
+
+.text-muted {
+	color: var(--muted);
+}
+
+/* A subtle cool card background to help text pop */
+.card-cool {
+	background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(249,250,251,0.95));
+	border: 1px solid rgba(15,23,42,0.04);
+}
+
+.card-cool-dark {
+	background: linear-gradient(180deg, rgba(31,41,55,0.9), rgba(17,24,39,0.95));
+	border: 1px solid rgba(255,255,255,0.04);
+}
+
+.text-primary {
+	color: var(--primary-600);
+}

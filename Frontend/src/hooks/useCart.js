@@ -23,8 +23,14 @@ export const useCart = (userId) => {
   const addItem = async (productId, quantity = 1) => {
     if (!userId) return;
     try {
-      await addToCart({ userId, productId, quantity });
-      fetchCart();
+      const res = await addToCart({ userId, productId, quantity });
+      // backend returns the updated cart (populated). Use it to update local state
+      if (res && res.products) {
+        setCart(res.products);
+        return res;
+      }
+      // fallback to refetch
+      await fetchCart();
     } catch (err) {
       console.error("Error adding to cart:", err);
     }
@@ -34,8 +40,12 @@ export const useCart = (userId) => {
   const updateItem = async (productId, quantity) => {
     if (!userId) return;
     try {
-      await updateCart(userId, { productId, quantity });
-      fetchCart();
+      const res = await updateCart(userId, { productId, quantity });
+      if (res && res.products) {
+        setCart(res.products);
+        return res;
+      }
+      await fetchCart();
     } catch (err) {
       console.error("Error updating cart:", err);
     }

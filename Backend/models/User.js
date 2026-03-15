@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      // store emails in lowercase to avoid case-sensitive duplicates
+      lowercase: true,
     },
 
     password: {
@@ -20,7 +22,9 @@ const userSchema = new mongoose.Schema(
 
     university: {
       type: String,
-      required: true,
+      // Not required at registration; users can add university later when
+      // they choose to sell items.
+      required: false,
     },
 
     department: {
@@ -29,15 +33,19 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["buyer", "seller"],
+      // Role value is informational only. New users default to 'buyer'.
       default: "buyer",
     },
 
     profileImage: {
       type: String,
     },
-
     studentCardImage: {
+      type: String,
+    },
+
+    // store the back side of student card if provided during onboarding
+    cardBackImage: {
       type: String,
     },
 
