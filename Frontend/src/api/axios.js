@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://student-marketplace-backend-8lmn.onrender.com",
+  baseURL: "https://student-marketplace-backend-8lmn.onrender.com/api",
 });
 
 // Add auth token if exists
